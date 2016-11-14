@@ -4,43 +4,90 @@ import io.selendroid.client.TouchActionBuilder;
 import io.selendroid.common.SelendroidCapabilities;
 import io.selendroid.standalone.SelendroidConfiguration;
 import io.selendroid.standalone.SelendroidLauncher;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.concurrent.TimeUnit;
-
+import org.openqa.selenium.interactions.touch.TouchActions;
 /**
  * Created by d.lihodedov on 18.10.2016.
  */
 public class fuckckingtest {
+    WebDriver driver;
+    SelendroidConfiguration config = new SelendroidConfiguration();
+    SelendroidCapabilities caps = new SelendroidCapabilities("com.movavi.mobile.videoeditor:1.1");
 
-
-    public static void main(String args[]) throws Exception{
-        WebDriver driver;
-        String current = new java.io.File( "." ).getCanonicalPath();
-        System.out.println("Current dir:"+current);
-        SelendroidConfiguration config = new SelendroidConfiguration();
-        //Add the selendroid-test-app to the standalone server
-        config.addSupportedApp("C:\\Users\\d.lihodedov\\IdeaProjects\\testandroidapp\\src\\main\\resources\\fortest.apk");
-
+    @Before
+    public void initializeSelendroid() {
+        config.addSupportedApp("C:\\test\\testapp.apk");
         SelendroidLauncher selendroidServer = new SelendroidLauncher(config);
         selendroidServer.launchSelendroid();
-        //-------------------------------------
-        SelendroidCapabilities caps = new SelendroidCapabilities("com.movavi.mobile.videoeditor:1.0.4");
         caps.setEmulator(false);
 
-        caps.setSerial("8e34c2ad");
-        driver = new SelendroidDriver(caps);
+        caps.setSerial(DeviceSelector("Lenovo_S60"));
+    }
+
+@Test
+    public void CheckVideoTest() throws Exception{
+int timer=0;
+    driver = new SelendroidDriver(caps);
         driver.get("and-activity://com.movavi.mobile.videoeditor.ActivityMain_");
         WebDriverWait wait = new WebDriverWait(driver, 10000);
         driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
-        checkvideoManager(3,driver);
+
+        checkvideoManager(4,1,driver);
         WebElement next=driver.findElement(By.id("menu_done"));
         next.click();
-        AudioItemSelector("App music",driver);
+//   driver.navigate().back();
+//    WebElement ClickAgree=driver.findElement(By.id("button1"));
+//    ClickAgree.click();
+//
+//
+//    driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+//    checkvideoManager(1,4,driver);
+//    next.click();
+    AudioItemSelector("App music",driver);
         next.click();
         WebElement element3 = driver.findElement(By.id("button_done"));
         element3.click();
+
+    WebElement PlayVideo = driver.findElement(By.id("buttonPlay"));
+PlayVideo.click();
+    WebElement Split= driver.findElement(By.id("splitButton"));
+    WebElement Crop = driver.findElement(By.id("menu_crop"));
+WebElement playSeekBar=driver.findElement(By.id("playSeekBar"));
+    pairvalues bar=getLocationofElem(playSeekBar);
+
+
+
+
+    //--------------------------ДЛЯ КОРРЕКТНОГО ВОСПРОИЗВЕДЕНИЯ ВСЕГО ВИДЕО-----------------------
+    while ((PlayVideo.isDisplayed())) {
+        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+    }
+
+    while(!PlayVideo.isDisplayed()){
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    }
+    TouchAction ta = new TouchActionBuilder().pointerDown(bar.getXcoord(),bar.getYcoord()).
+            pointerMove(bar.getXcoord()+playSeekBar.getSize().getWidth()/2,bar.getYcoord()).pointerUp().build();
+    ta.perform(driver);
+    Split.click();
+    Crop.click();
+    PlayVideo.click();
+    //--------------------------------------------------------------------------------------------
+    while ((PlayVideo.isDisplayed())) {
+        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+    }
+
+    while(!PlayVideo.isDisplayed()){
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    }
+//    }
+     // wait.until(ExpectedConditions.elementToBeClickable(PlayVideo));
+
         WebElement element4 = driver.findElement(By.id("menu_export"));
         element4.click();
         driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
@@ -49,14 +96,103 @@ public class fuckckingtest {
             driver.quit();
    }}
 
-    public static void checkvideoManager(int count, WebDriver driver)  {
 
+
+    @Test
+    public void WorkspaceTest() throws Exception{
+        driver = new SelendroidDriver(caps);
+        driver.get("and-activity://com.movavi.mobile.videoeditor.ActivityMain_");
+        WebDriverWait wait = new WebDriverWait(driver, 10000);
+        driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+
+        checkvideoManager(4,1,driver);
+        WebElement next=driver.findElement(By.id("menu_done"));
+        next.click();
+//   driver.navigate().back();
+//    WebElement ClickAgree=driver.findElement(By.id("button1"));
+//    ClickAgree.click();
+//
+//
+//    driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
+//    checkvideoManager(1,4,driver);
+//    next.click();
+        AudioItemSelector("App music",driver);
+        next.click();
+        WebElement element3 = driver.findElement(By.id("button_done"));
+        element3.click();
+
+        WebElement PlayVideo = driver.findElement(By.id("buttonPlay"));
+        PlayVideo.click();
+        WebElement Split= driver.findElement(By.id("splitButton"));
+        WebElement Crop = driver.findElement(By.id("menu_crop"));
+        WebElement playSeekBar=driver.findElement(By.id("playSeekBar"));
+        pairvalues bar=getLocationofElem(playSeekBar);
+
+
+
+
+        //--------------------------ДЛЯ КОРРЕКТНОГО ВОСПРОИЗВЕДЕНИЯ ВСЕГО ВИДЕО-----------------------
+        while ((PlayVideo.isDisplayed())) {
+            driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+        }
+
+        while(!PlayVideo.isDisplayed()){
+            driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        }
+        TouchAction ta = new TouchActionBuilder().pointerDown(bar.getXcoord(),bar.getYcoord()).
+                pointerMove(bar.getXcoord()+playSeekBar.getSize().getWidth()/2,bar.getYcoord()).pointerUp().build();
+        ta.perform(driver);
+        Split.click();
+        Crop.click();
+        PlayVideo.click();
+        //--------------------------------------------------------------------------------------------
+        while ((PlayVideo.isDisplayed())) {
+            driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+        }
+
+        while(!PlayVideo.isDisplayed()){
+            driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        }
+//    }
+        // wait.until(ExpectedConditions.elementToBeClickable(PlayVideo));
+
+        WebElement element4 = driver.findElement(By.id("menu_export"));
+        element4.click();
+        driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
+        WebElement taken = wait.until(ExpectedConditions.elementToBeClickable(By.id("menu_export_new")));
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+
+    @Test
+    public void AudioTest(){
+
+    }
+
+    @Test
+    public void ExportTest(){
+
+    }
+
+
+
+
+
+
+
+    public static void checkvideoManager(int count,int position, WebDriver driver)  {
+        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
         WebElement elem[]=new WebElement[count];
+        WebDriverWait wait = new WebDriverWait(driver, 10000);
         for (int i=0;i<count;i++) {
-            if (driver.findElements(By.xpath("(//AppCompatImageView[@id='previewImage'])["+(i+1)+"]")).size()> 0) {
-        elem[i]=driver.findElement(By.xpath("(//AppCompatImageView[@id='previewImage'])["+(i+1)+"]"));
-                if(elem[i].isDisplayed()) elem[i].click();
-        } else driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            if (driver.findElements(By.xpath("(//AppCompatImageView[@id='previewImage'])["+(position+i)+"]")).size()> 0) {
+        elem[i]=driver.findElement(By.xpath("(//AppCompatImageView[@id='previewImage'])["+(position+i)+"]"));
+                if(elem[i].isDisplayed()){ //TouchActions touc=new TouchActions(driver).longPress(elem[i]);
+                   elem[i].click();
+                }
+        } else wait.until(ExpectedConditions.elementToBeClickable(elem[i]));
         }
     }
 
@@ -79,18 +215,22 @@ public class fuckckingtest {
                 element1.click();
                 //getLocationofElem(element1);
                 pairvalues coordinates=getLocationofElem(element1);
+                Dimension dimension=new Dimension(coordinates.getXcoord(),coordinates.getYcoord());
             TouchAction ta = new TouchActionBuilder().pointerDown(coordinates.getXcoord(),coordinates.getYcoord()).
-            pointerMove(coordinates.getXcoord()+coordinates.getXcoord()*3,coordinates.getYcoord()).pointerUp().build();
+            pointerMove(coordinates.getXcoord()+coordinates.getXcoord(),coordinates.getYcoord()).pointerUp().build();
             ta.perform(driver);
                 driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-                     }
+
+        TouchAction tb = new TouchActionBuilder().pointerDown(element1.getSize().getWidth(),coordinates.getYcoord()).
+                pointerMove((coordinates.getXcoord()*6+element1.getSize().getWidth())/2,coordinates.getYcoord()).pointerUp().build();
+        tb.perform(driver);}
     }
     public static pairvalues getLocationofElem(WebElement element){
         Point point = element.getLocation();
-        pairvalues Coordinates=new pairvalues(point.getX(),point.getY());
+                pairvalues Coordinates=new pairvalues(point.getX(),point.getY());
         return Coordinates;
     }
-    public String DeviceSelector(String NameofDevice){
+    public static String DeviceSelector(String NameofDevice){
         String outputSerial=new String();
         if (NameofDevice.equals("Nexus_5")) outputSerial="044a6eeff0cca631";
         else if (NameofDevice.equals("Samsung_Galaxy_Tab_4")) outputSerial="61ac735d07d7de10";
