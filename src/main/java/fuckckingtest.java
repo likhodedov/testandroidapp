@@ -77,11 +77,24 @@ WebElement playSeekBar=driver.findElement(By.id("playSeekBar"));
     Split.click();
     Crop.click();
     PlayVideo.click();
-    //--------------------------------------------------------------------------------------------
     while ((PlayVideo.isDisplayed())) {
         driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
     }
 
+    while(!PlayVideo.isDisplayed()){
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    }
+    //--------------------------------------------------------------------------------------------
+    pairvalues bar2=getLocationofElem(playSeekBar);
+    TouchAction tb = new TouchActionBuilder().pointerDown(bar2.getXcoord(),bar2.getYcoord()).
+            pointerMove(bar2.getXcoord()+playSeekBar.getSize().getWidth()-playSeekBar.getSize().getWidth()/4,bar2.getYcoord()).pointerUp().build();
+    tb.perform(driver);
+    Split.click();
+    Crop.click();
+    PlayVideo.click();
+    while ((PlayVideo.isDisplayed())) {
+        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+    }
     while(!PlayVideo.isDisplayed()){
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
     }
@@ -100,69 +113,7 @@ WebElement playSeekBar=driver.findElement(By.id("playSeekBar"));
 
     @Test
     public void WorkspaceTest() throws Exception{
-        driver = new SelendroidDriver(caps);
-        driver.get("and-activity://com.movavi.mobile.videoeditor.ActivityMain_");
-        WebDriverWait wait = new WebDriverWait(driver, 10000);
-        driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
-        checkvideoManager(4,1,driver);
-        WebElement next=driver.findElement(By.id("menu_done"));
-        next.click();
-//   driver.navigate().back();
-//    WebElement ClickAgree=driver.findElement(By.id("button1"));
-//    ClickAgree.click();
-//
-//
-//    driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
-//    checkvideoManager(1,4,driver);
-//    next.click();
-        AudioItemSelector("App music",driver);
-        next.click();
-        WebElement element3 = driver.findElement(By.id("button_done"));
-        element3.click();
-
-        WebElement PlayVideo = driver.findElement(By.id("buttonPlay"));
-        PlayVideo.click();
-        WebElement Split= driver.findElement(By.id("splitButton"));
-        WebElement Crop = driver.findElement(By.id("menu_crop"));
-        WebElement playSeekBar=driver.findElement(By.id("playSeekBar"));
-        pairvalues bar=getLocationofElem(playSeekBar);
-
-
-
-
-        //--------------------------ДЛЯ КОРРЕКТНОГО ВОСПРОИЗВЕДЕНИЯ ВСЕГО ВИДЕО-----------------------
-        while ((PlayVideo.isDisplayed())) {
-            driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-        }
-
-        while(!PlayVideo.isDisplayed()){
-            driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        }
-        TouchAction ta = new TouchActionBuilder().pointerDown(bar.getXcoord(),bar.getYcoord()).
-                pointerMove(bar.getXcoord()+playSeekBar.getSize().getWidth()/2,bar.getYcoord()).pointerUp().build();
-        ta.perform(driver);
-        Split.click();
-        Crop.click();
-        PlayVideo.click();
-        //--------------------------------------------------------------------------------------------
-        while ((PlayVideo.isDisplayed())) {
-            driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-        }
-
-        while(!PlayVideo.isDisplayed()){
-            driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        }
-//    }
-        // wait.until(ExpectedConditions.elementToBeClickable(PlayVideo));
-
-        WebElement element4 = driver.findElement(By.id("menu_export"));
-        element4.click();
-        driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
-        WebElement taken = wait.until(ExpectedConditions.elementToBeClickable(By.id("menu_export_new")));
-        if (driver != null) {
-            driver.quit();
-        }
     }
 
 
@@ -215,14 +166,15 @@ WebElement playSeekBar=driver.findElement(By.id("playSeekBar"));
                 element1.click();
                 //getLocationofElem(element1);
                 pairvalues coordinates=getLocationofElem(element1);
-                Dimension dimension=new Dimension(coordinates.getXcoord(),coordinates.getYcoord());
+
+
             TouchAction ta = new TouchActionBuilder().pointerDown(coordinates.getXcoord(),coordinates.getYcoord()).
-            pointerMove(coordinates.getXcoord()+coordinates.getXcoord(),coordinates.getYcoord()).pointerUp().build();
+            pointerMove(coordinates.getXcoord()+coordinates.getXcoord()*4,coordinates.getYcoord()).pointerUp().build();
             ta.perform(driver);
                 driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
         TouchAction tb = new TouchActionBuilder().pointerDown(element1.getSize().getWidth(),coordinates.getYcoord()).
-                pointerMove((coordinates.getXcoord()*6+element1.getSize().getWidth())/2,coordinates.getYcoord()).pointerUp().build();
+                pointerMove((coordinates.getXcoord()+element1.getSize().getWidth()-element1.getSize().getWidth()/4),coordinates.getYcoord()).pointerUp().build();
         tb.perform(driver);}
     }
     public static pairvalues getLocationofElem(WebElement element){
