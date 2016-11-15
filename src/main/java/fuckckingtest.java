@@ -20,20 +20,20 @@ public class fuckckingtest {
     SelendroidCapabilities caps = new SelendroidCapabilities("com.movavi.mobile.videoeditor:1.1");
 
     @Before
-    public void initializeSelendroid() {
+    public void initializeSelendroid() throws Exception {
         config.addSupportedApp("C:\\test\\testapp.apk");
         SelendroidLauncher selendroidServer = new SelendroidLauncher(config);
         selendroidServer.launchSelendroid();
         caps.setEmulator(false);
-
+        driver = new SelendroidDriver(caps);
+        driver.get("and-activity://com.movavi.mobile.videoeditor.ActivityMain_");
         caps.setSerial(DeviceSelector("Lenovo_S60"));
+
     }
 
 @Test
     public void CheckVideoTest() throws Exception{
-int timer=0;
-    driver = new SelendroidDriver(caps);
-        driver.get("and-activity://com.movavi.mobile.videoeditor.ActivityMain_");
+
         WebDriverWait wait = new WebDriverWait(driver, 10000);
         driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
@@ -63,27 +63,16 @@ WebElement playSeekBar=driver.findElement(By.id("playSeekBar"));
 
 
 
-    //--------------------------ДЛЯ КОРРЕКТНОГО ВОСПРОИЗВЕДЕНИЯ ВСЕГО ВИДЕО-----------------------
-    while ((PlayVideo.isDisplayed())) {
-        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-    }
 
-    while(!PlayVideo.isDisplayed()){
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-    }
+    //---------------------------------------------------------------------
+    PlayVideoStart(driver,PlayVideo);
     TouchAction ta = new TouchActionBuilder().pointerDown(bar.getXcoord(),bar.getYcoord()).
             pointerMove(bar.getXcoord()+playSeekBar.getSize().getWidth()/2,bar.getYcoord()).pointerUp().build();
     ta.perform(driver);
     Split.click();
     Crop.click();
     PlayVideo.click();
-    while ((PlayVideo.isDisplayed())) {
-        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-    }
-
-    while(!PlayVideo.isDisplayed()){
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-    }
+    PlayVideoStart(driver,PlayVideo);
     //--------------------------------------------------------------------------------------------
     pairvalues bar2=getLocationofElem(playSeekBar);
     TouchAction tb = new TouchActionBuilder().pointerDown(bar2.getXcoord(),bar2.getYcoord()).
@@ -92,12 +81,83 @@ WebElement playSeekBar=driver.findElement(By.id("playSeekBar"));
     Split.click();
     Crop.click();
     PlayVideo.click();
-    while ((PlayVideo.isDisplayed())) {
-        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
-    }
-    while(!PlayVideo.isDisplayed()){
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-    }
+    PlayVideoStart(driver,PlayVideo);
+
+    WebElement ChangeDurationVideoItem = driver.findElement(By.xpath("(//RangeSeekBar[@id='rangeSeekBar'])[1]"));
+pairvalues coordinatesofChangeDurationVideoItem=getLocationofElem(ChangeDurationVideoItem);
+
+
+    TouchAction tj = new TouchActionBuilder().pointerDown(coordinatesofChangeDurationVideoItem.getXcoord(),coordinatesofChangeDurationVideoItem.getYcoord()).
+            pointerMove(coordinatesofChangeDurationVideoItem.getXcoord()+coordinatesofChangeDurationVideoItem.getXcoord(),coordinatesofChangeDurationVideoItem.getYcoord()).pointerUp().build();
+    tj.perform(driver);
+    driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+    TouchAction tk = new TouchActionBuilder().pointerDown(coordinatesofChangeDurationVideoItem.getXcoord()+ChangeDurationVideoItem.getSize().getWidth()-1,coordinatesofChangeDurationVideoItem.getYcoord()).
+            pointerMove(coordinatesofChangeDurationVideoItem.getXcoord()+ChangeDurationVideoItem.getSize().getWidth()-ChangeDurationVideoItem.getSize().getWidth()/4,coordinatesofChangeDurationVideoItem.getYcoord()).pointerUp().build();
+    tk.perform(driver);
+
+
+
+    WebElement moveVideo=driver.findElement(By.id("reorder_handle"));
+    pairvalues coordmoveVideo=getLocationofElem(moveVideo);
+    TouchAction tp = new TouchActionBuilder().pointerDown(coordmoveVideo.getXcoord(),coordmoveVideo.getYcoord()).
+            pointerMove(coordmoveVideo.getXcoord(),coordmoveVideo.getYcoord()+moveVideo.getSize().getHeight()*2).pointerUp().build();
+    tp.perform(driver);
+    driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
+
+    WebElement item1 = driver.findElement(By.xpath("(//LinearLayout[@id='item_layout'])[1]"));
+    pairvalues item=getLocationofElem(item1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        TouchAction tr = new TouchActionBuilder().pointerDown(item.getXcoord(),item.getYcoord()).
+                pointerMove(item.getXcoord(),0).pointerUp().build();
+        tr.perform(driver);
+
+    WebElement AddNewVideo=driver.findElement(By.id("buttonAdd"));
+    AddNewVideo.click();
+    checkvideoManager(1,5,driver);
+
+    WebElement element1 = driver.findElement(By.xpath("//ActionMenuItemView[@id='menu_done']"));
+    element1.click();
+
+    WebElement itemtodelandcopy=driver.findElement(By.xpath("(//LinearLayout[@id='item_layout'])[1]"));
+    pairvalues todelandcopy=getLocationofElem(itemtodelandcopy);
+    TouchAction th = new TouchActionBuilder().pointerDown(todelandcopy.getXcoord(),todelandcopy.getYcoord()).
+            pointerMove(todelandcopy.getXcoord()+itemtodelandcopy.getSize().getWidth(),todelandcopy.getYcoord()).pointerUp().build();
+    th.perform(driver);
+    WebElement buttoncopy = driver.findElement(By.xpath("(//AppCompatButton[@id='buttonCopy'])[1]"));
+    buttoncopy.click();
+    TouchAction tf = new TouchActionBuilder().pointerDown(todelandcopy.getXcoord(),todelandcopy.getYcoord()).
+            pointerMove(todelandcopy.getXcoord()+itemtodelandcopy.getSize().getWidth(),todelandcopy.getYcoord()).pointerUp().build();
+    tf.perform(driver);
+    WebElement buttonDelete = driver.findElement(By.xpath("(//AppCompatButton[@id='buttonDelete'])[1]"));
+    buttonDelete.click();
+WebElement SnackBar = driver.findElement(By.id("snackbar_action"));
+    SnackBar.click();
+    driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
+    WebElement MusicAdd=driver.findElement(By.id("menu_add_music"));
+    MusicAdd.click();
+    driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
+    driver.navigate().back();
+
+    WebElement fullscreen=driver.findElement(By.id("fullscreen_toggle"));
+    fullscreen.click();
+    WebElement playfullscreen = driver.findElement(By.xpath("//AppCompatImageView[@id='buttonPlay']"));
+    playfullscreen.click();
+    PlayVideoStart(driver,playfullscreen);
+    fullscreen.click();
 //    }
      // wait.until(ExpectedConditions.elementToBeClickable(PlayVideo));
 
@@ -195,4 +255,14 @@ WebElement playSeekBar=driver.findElement(By.id("playSeekBar"));
         else if (NameofDevice.equals("Samsung_J5")) outputSerial="8e34c2ad";
 return outputSerial;
     }
+public static void PlayVideoStart (WebDriver driver, WebElement Element){
+    while ((Element.isDisplayed())) {
+        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+    }
+
+    while(!Element.isDisplayed()){
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    }
 }
+}
+
