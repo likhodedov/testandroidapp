@@ -23,12 +23,14 @@ public class fuckckingtest {
     @Before
     public void initializeSelendroid() throws Exception {
         config.addSupportedApp("C:\\test\\testapp2.apk");
+      //  config.setPort(8080);
+      //  config.setSelendroidServerPort(8080);
         SelendroidLauncher selendroidServer = new SelendroidLauncher(config);
         selendroidServer.launchSelendroid();
         caps.setEmulator(false);
         driver = new SelendroidDriver(caps);
         driver.get("and-activity://com.movavi.mobile.videoeditor.ActivityMain_");
-        caps.setSerial(DeviceSelector("Samsung_Galaxy_Tab_4"));
+        caps.setSerial(DeviceSelector("Lenovo_S60"));
     }
 
 
@@ -38,7 +40,7 @@ public class fuckckingtest {
         WebDriverWait wait = new WebDriverWait(driver, 10000);
         driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 //--------------ДОБАВЛЕНИЕ ВИДЕО В ПРОЕКТ-----------------------
-        checkvideoManager(4,1,driver);
+        checkvideoManager(2,4,driver);
         WebElement next=driver.findElement(By.id("menu_done"));
         next.click();
 //--------------ДОБАВЛЕНИЕ АУДИО В ПРОЕКТ-----------------------
@@ -75,25 +77,31 @@ public class fuckckingtest {
     WebElement ChangeDurationVideoItem = driver.findElement(By.xpath("(//RangeSeekBar[@id='rangeSeekBar'])[1]"));
 pairvalues coordinatesofChangeDurationVideoItem=getLocationofElem(ChangeDurationVideoItem);
     TouchAction tj = new TouchActionBuilder().pointerDown(coordinatesofChangeDurationVideoItem.getXcoord(),coordinatesofChangeDurationVideoItem.getYcoord()).
-            pointerMove(coordinatesofChangeDurationVideoItem.getXcoord()+coordinatesofChangeDurationVideoItem.getXcoord(),coordinatesofChangeDurationVideoItem.getYcoord()).pointerUp().build();
+            pointerMove(coordinatesofChangeDurationVideoItem.getXcoord()+ChangeDurationVideoItem.getSize().getWidth()/4,coordinatesofChangeDurationVideoItem.getYcoord()).pointerUp().build();
     tj.perform(driver);
+    tj.perform(driver);
+
     driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-    TouchAction tk = new TouchActionBuilder().pointerDown(coordinatesofChangeDurationVideoItem.getXcoord()+ChangeDurationVideoItem.getSize().getWidth()-1,coordinatesofChangeDurationVideoItem.getYcoord()).
+    TouchAction tk = new TouchActionBuilder().pointerDown(coordinatesofChangeDurationVideoItem.getXcoord()-1+ChangeDurationVideoItem.getSize().getWidth()-1,coordinatesofChangeDurationVideoItem.getYcoord()).
             pointerMove(coordinatesofChangeDurationVideoItem.getXcoord()+ChangeDurationVideoItem.getSize().getWidth()-ChangeDurationVideoItem.getSize().getWidth()/4,coordinatesofChangeDurationVideoItem.getYcoord()).pointerUp().build();
     tk.perform(driver);
+    driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
 //--------------ИЗМЕНЕНИЕ ПОЗИЦИИ ПЕРВОГО ВИДЕОТРЕКА-----------------------
-    WebElement moveVideo=driver.findElement(By.id("reorder_handle"));
+    WebElement moveVideo=driver.findElement(By.xpath("(//AppCompatImageView[@id='reorder_handle'])[1]"));
     pairvalues coordmoveVideo=getLocationofElem(moveVideo);
     TouchAction tp = new TouchActionBuilder().pointerDown(coordmoveVideo.getXcoord(),coordmoveVideo.getYcoord()).
             pointerMove(coordmoveVideo.getXcoord(),coordmoveVideo.getYcoord()+moveVideo.getSize().getHeight()*2).pointerUp().build();
     tp.perform(driver);
-    driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
+
+    driver.manage().timeouts().implicitlyWait(150, TimeUnit.SECONDS);
+    tp.perform(driver);
+
 
 
 //--------------ПРОЛИСТЫВАНИЕ СПИСКА ДОБАВЛЕННЫХ ВИДЕО ДЛЯ НАЖАТИЯ КНОПКИ "+"(ДОБАВЛЕНИЕ ВИДЕО)-----------------------
     WebElement item1 = driver.findElement(By.xpath("(//LinearLayout[@id='item_layout'])[1]"));
     pairvalues item=getLocationofElem(item1);
-        TouchAction tr = new TouchActionBuilder().pointerDown(item.getXcoord(),item.getYcoord()).
+        TouchAction tr = new TouchActionBuilder().pointerDown(item.getXcoord()+1,item.getYcoord()).
                 pointerMove(item.getXcoord(),0).pointerUp().build();
         tr.perform(driver);
 //--------------ДОБАВЛЕНИЕ ВИДЕО В ПРОЕКТ-----------------------
@@ -109,12 +117,14 @@ pairvalues coordinatesofChangeDurationVideoItem=getLocationofElem(ChangeDuration
     TouchAction th = new TouchActionBuilder().pointerDown(todelandcopy.getXcoord(),todelandcopy.getYcoord()).
             pointerMove(todelandcopy.getXcoord()+itemtodelandcopy.getSize().getWidth(),todelandcopy.getYcoord()).pointerUp().build();
     th.perform(driver);
+    driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
 //--------------КОПИРОВАНИЕ ВИДЕОДОРОЖКИ-----------------------
     WebElement buttoncopy = driver.findElement(By.xpath("(//AppCompatButton[@id='buttonCopy'])[1]"));
     buttoncopy.click();
     TouchAction tf = new TouchActionBuilder().pointerDown(todelandcopy.getXcoord(),todelandcopy.getYcoord()).
             pointerMove(todelandcopy.getXcoord()+itemtodelandcopy.getSize().getWidth(),todelandcopy.getYcoord()).pointerUp().build();
     tf.perform(driver);
+    driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
 //--------------УДАЛЕНИЕ ВИДЕОДОРОЖКИ И ОТМЕНА ДЕЙСТВИЯ-----------------------
     WebElement buttonDelete = driver.findElement(By.xpath("(//AppCompatButton[@id='buttonDelete'])[1]"));
     buttonDelete.click();
@@ -134,13 +144,14 @@ WebElement SnackBar = driver.findElement(By.id("snackbar_action"));
     PlayVideoStart(driver,playfullscreen);
     fullscreen.click();
 //--------------ЭКСПОРТ И ОЖИДАНИЕ ОКОНЧАНИЯ ЭКСПОРТА-----------------------
-        WebElement element4 = driver.findElement(By.id("menu_export"));
-        element4.click();
-        driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
-        WebElement taken = wait.until(ExpectedConditions.elementToBeClickable(By.id("menu_export_new")));
-        if (driver != null) {
-            driver.quit();
-   }}
+//        WebElement element4 = driver.findElement(By.id("menu_export"));
+//        element4.click();
+//        driver.manage().timeouts().implicitlyWait(45, TimeUnit.SECONDS);
+//        WebElement taken = wait.until(ExpectedConditions.elementToBeClickable(By.id("menu_export_new")));
+//        if (driver != null) {
+//            driver.quit();
+//   }
+}
 
 
 
@@ -215,7 +226,7 @@ WebElement SnackBar = driver.findElement(By.id("snackbar_action"));
 
 
     public static void checkvideoManager(int count,int position, WebDriver driver)  {
-        driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5000, TimeUnit.SECONDS);
         WebElement elem[]=new WebElement[count];
         WebDriverWait wait = new WebDriverWait(driver, 10000);
         for (int i=0;i<count;i++) {
@@ -250,7 +261,8 @@ WebElement SnackBar = driver.findElement(By.id("snackbar_action"));
 
 
             TouchAction ta = new TouchActionBuilder().pointerDown(coordinates.getXcoord(),coordinates.getYcoord()).
-            pointerMove(coordinates.getXcoord()+coordinates.getXcoord()*4,coordinates.getYcoord()).pointerUp().build();
+            pointerMove(coordinates.getXcoord()+element1.getSize().getWidth()/4,coordinates.getYcoord()).pointerUp().build();
+            ta.perform(driver);
             ta.perform(driver);
                 driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
@@ -268,7 +280,7 @@ WebElement SnackBar = driver.findElement(By.id("snackbar_action"));
         if (NameofDevice.equals("Nexus_5")) outputSerial="044a6eeff0cca631";
         else if (NameofDevice.equals("Samsung_Galaxy_Tab_4")) outputSerial="61ac735d07d7de10";
         else if (NameofDevice.equals("Huawei_MediaPad_M2")) outputSerial="36E6R15925001108";
-        //else if (NameofDevice.equals("Nexus_5X")) outputSerial="00bd9f1ce5b6b398";
+        else if (NameofDevice.equals("Nexus_5X")) outputSerial="00bd9f1ce5b6b398";
         else if (NameofDevice.equals("Lenovo_S60")) outputSerial="1376deea";
         else if (NameofDevice.equals("Lenovo_S860")) outputSerial="error";
         else if (NameofDevice.equals("Asus_ZenFone_5")) outputSerial="ECAZCY02W348";
