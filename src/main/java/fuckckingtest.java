@@ -48,6 +48,7 @@ private final int ValueOfVideo = 15;
         caps.setSerial(DeviceSelector("Asus_ZenFone_5"));
     }
     public static void main(String[] args) throws Exception {
+        System.out.println("hello");
         JUnitCore.main(
                 "fuckckingtest");
     }
