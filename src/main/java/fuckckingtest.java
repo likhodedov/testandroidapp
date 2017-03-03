@@ -58,11 +58,7 @@ private final int ValueOfVideo = 15;
         WebDriverWait wait = new WebDriverWait(driver, 10000);
         driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
-
-
-
-for (int i=1;i<=10;i++){
-    checkvideoManagerNEW(1,i,driver);
+    checkvideoManagerNEW(1,1,driver);
         driver.findElement(By.id("buttonComplete")).click();
 
 
@@ -75,7 +71,7 @@ driver.findElement(By.id("menu_restart")).click();
 driver.findElement(By.id("button1")).click();
 
 //------------------------
-    }}
+    }
 
 
 @Test
